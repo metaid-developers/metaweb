@@ -1,0 +1,41 @@
+#chain network
+net: "livenet"
+
+indexer:
+  port: "7333"
+  scan_interval: 10
+  batch_size: 100
+  start_height: 0
+  mvc_init_block_height: 86500  # MVC chain initial block height (used when start_height=0 and no data in DB)
+  btc_init_block_height: 0  # BTC chain initial block height (used when start_height=0 and no data in DB)
+  swagger_base_url: "localhost:7333"  # Swagger API base URL
+  zmq_enabled: true  # Enable ZMQ real-time monitoring
+  zmq_address: "tcp://127.0.0.1:28332"  # ZMQ server address
+  path_prefix: ""  # Path prefix for reverse proxy (e.g., "/metaapp"), empty string means root path. If not set, will try to get from X-Forwarded-Prefix header
+
+#database
+database:
+  indexer_type: "pebble"  # Indexer database type: mysql or pebble
+  data_dir: "./indexer_pebble_data"  # PebbleDB data directory (used when indexer_type=pebble)
+
+
+# Blockchain configuration
+chain:
+  rpc_url: "http://127.0.0.1:9882"
+  rpc_user: "rpcuser"
+  rpc_pass: "rpcpassword"
+  start_height: 0
+
+meta_app:
+  deploy_file_path: "./meta_app_deploy_data"
+
+temp_app:
+  enable: true
+  deploy_file_path: "./temp_app_deploy_data"  # temp app deploy file path
+  expire_hours: 24  # temp app expire hours
+  chunk_size: 5  # temp app chunk size (MB, default 5MB)
+
+metafs:
+  domain: "http://localhost:7281"  # Metafs service domain (e.g., "https://file.metaid.io")
+
+

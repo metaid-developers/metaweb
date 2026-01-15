@@ -1,0 +1,46 @@
+version: '3.8'
+
+services:
+  # Indexer indexing service
+  indexer:
+    build:
+      context: ..
+      dockerfile: deploy/Dockerfile.indexer
+    container_name: meta-app-service-indexer
+    restart: always
+    ports:
+      - "${INDEXER_PORT:-7333}:7333"
+    environment:
+      - TZ=Asia/Shanghai
+    command: ["--env=${ENV:-mainnet}"]
+    volumes:
+      # Mount configuration directory (read-only)
+      - ../conf:/app/conf:ro
+      # Mount data directories (persistent storage)
+      - ../../indexer_pebble_data:/app/indexer_pebble_data
+      - ../../meta_app_deploy_data:/app/meta_app_deploy_data
+      - ../../temp_app_deploy_data:/app/temp_app_deploy_data
+      # Mount local data directory if needed
+      - ../../data/pebble:/app/data/pebble
+    networks:
+      - meta-app-service-network
+    healthcheck:
+      test: ["CMD", "wget", "--spider", "-q", "http://localhost:7333/health"]
+      interval: 30s
+      timeout: 5s
+      retries: 3
+      start_period: 10s
+    # Resource limits (optional, adjust as needed)
+    deploy:
+      resources:
+        limits:
+          cpus: '2'
+          memory: 2G
+        reservations:
+          cpus: '0.5'
+          memory: 512M
+
+networks:
+  meta-app-service-network:
+    driver: bridge
+    name: meta-app-service-indexer-network

@@ -1,0 +1,980 @@
+basePath: /
+definitions:
+  meta-app-service_controller_respond.ConfigResponse:
+    properties:
+      metafs_domain:
+        example: http://localhost:7281
+        type: string
+    type: object
+  meta-app-service_controller_respond.DeployQueueListResponse:
+    properties:
+      has_more:
+        example: true
+        type: boolean
+      next_cursor:
+        example: 100
+        type: integer
+      queues:
+        items:
+          $ref: '#/definitions/meta-app-service_controller_respond.DeployQueueResponse'
+        type: array
+    type: object
+  meta-app-service_controller_respond.DeployQueueResponse:
+    properties:
+      code:
+        type: string
+      content:
+        type: string
+      content_type:
+        type: string
+      created_at:
+        type: string
+      first_pin_id:
+        type: string
+      pin_id:
+        type: string
+      timestamp:
+        type: integer
+      try_count:
+        type: integer
+      version:
+        type: string
+    type: object
+  meta-app-service_controller_respond.IndexerStatsResponse:
+    properties:
+      total_apps:
+        example: 12345
+        type: integer
+    type: object
+  meta-app-service_controller_respond.IndexerSyncStatusResponse:
+    properties:
+      chain_name:
+        description: ID                int64     `json:"id" example:"1"`
+        example: mvc
+        type: string
+      created_at:
+        example: "2024-01-01T00:00:00Z"
+        type: string
+      current_sync_height:
+        example: 12345
+        type: integer
+      latest_block_height:
+        example: 12350
+        type: integer
+      updated_at:
+        example: "2024-01-01T00:00:00Z"
+        type: string
+    type: object
+  meta-app-service_controller_respond.MetaAppHistoryResponse:
+    properties:
+      history:
+        items:
+          $ref: '#/definitions/meta-app-service_controller_respond.MetaAppResponse'
+        type: array
+    type: object
+  meta-app-service_controller_respond.MetaAppListResponse:
+    properties:
+      apps:
+        items:
+          $ref: '#/definitions/meta-app-service_controller_respond.MetaAppResponse'
+        type: array
+      has_more:
+        example: true
+        type: boolean
+      next_cursor:
+        example: 100
+        type: integer
+    type: object
+  meta-app-service_controller_respond.MetaAppResponse:
+    properties:
+      app_name:
+        description: 应用名称
+        type: string
+      block_height:
+        description: 区块高度
+        type: integer
+      chain_name:
+        description: 链信息
+        type: string
+      code:
+        description: 代码 (metafile://pinid)
+        type: string
+      content:
+        description: 内容 (pinid)
+        type: string
+      content_hash:
+        description: 内容哈希
+        type: string
+      content_type:
+        description: '内容类型: /protocols/metatree'
+        type: string
+      cover_img:
+        description: 封面图片 (metafile://pinid)
+        type: string
+      created_at:
+        description: 时间戳
+        type: string
+      creator_address:
+        description: 创建者地址
+        type: string
+      creator_meta_id:
+        description: 创建者信息
+        type: string
+      deploy_info:
+        $ref: '#/definitions/meta-app-service_models.MetaAppDeployFileContent'
+      disabled:
+        description: 是否禁用
+        type: boolean
+      first_pin_id:
+        description: 基础信息
+        type: string
+      icon:
+        description: 图标 (metafile://pinid)
+        type: string
+      index_file:
+        description: 入口文件
+        type: string
+      intro:
+        description: 应用介绍
+        type: string
+      intro_imgs:
+        description: 介绍图片列表 (metafile://pinid)
+        items:
+          type: string
+        type: array
+      metadata:
+        description: 元数据 (JSON 字符串)
+        type: string
+      operation:
+        description: '操作类型: create/modify/revoke'
+        type: string
+      owner_address:
+        description: 拥有者地址
+        type: string
+      owner_meta_id:
+        description: 拥有者 MetaID
+        type: string
+      parent_path:
+        description: 父路径
+        type: string
+      path:
+        description: 路径
+        type: string
+      pin_id:
+        description: PIN ID (主键)
+        type: string
+      prompt:
+        description: 提示信息
+        type: string
+      runtime:
+        description: '运行环境: browser/android/ios/windows/macOS/Linux'
+        type: string
+      state:
+        description: 状态码
+        type: integer
+      status:
+        description: 状态信息
+        type: integer
+      timestamp:
+        description: 时间戳
+        type: integer
+      title:
+        description: MetaApp 协议字段
+        type: string
+      tx_id:
+        description: 交易 ID
+        type: string
+      updated_at:
+        description: 更新时间
+        type: string
+      version:
+        description: 版本号
+        type: string
+      vout:
+        description: 输出索引
+        type: integer
+    type: object
+  meta-app-service_controller_respond.Response:
+    description: Unified API response structure
+    properties:
+      code:
+        example: 0
+        type: integer
+      data: {}
+      message:
+        example: success
+        type: string
+      processingTime:
+        example: 123
+        type: integer
+    type: object
+  meta-app-service_controller_respond.TempAppChunkInitResponse:
+    properties:
+      chunk_size:
+        description: 分片大小
+        type: integer
+      total_chunks:
+        description: 总分片数
+        type: integer
+      upload_id:
+        description: 上传 ID
+        type: string
+    type: object
+  meta-app-service_controller_respond.TempAppChunkUploadResponse:
+    properties:
+      chunk_size:
+        description: 分片大小
+        type: integer
+      message:
+        description: 错误信息等
+        type: string
+      progress:
+        description: 上传进度（0-100）
+        type: number
+      status:
+        description: '状态: uploading/merging/completed/failed'
+        type: string
+      token_id:
+        description: 临时应用 TokenID（合并后生成）
+        type: string
+      total_chunks:
+        description: 总分片数
+        type: integer
+      total_size:
+        description: 总文件大小
+        type: integer
+      upload_id:
+        description: 上传 ID
+        type: string
+      uploaded_chunks:
+        description: 已上传的分片索引列表
+        items:
+          type: integer
+        type: array
+    type: object
+  meta-app-service_controller_respond.TempAppDeployResponse:
+    properties:
+      deployment_details:
+        allOf:
+        - $ref: '#/definitions/meta-app-service_controller_respond.TempAppDeploymentDetails'
+        description: 部署详情
+      expires_at:
+        description: 过期时间
+        type: string
+      id:
+        description: TokenID
+        type: string
+      preview_url:
+        description: 预览 URL（完整 URL）
+        type: string
+      url:
+        description: 相对路径 URL
+        type: string
+    type: object
+  meta-app-service_controller_respond.TempAppDeploymentDetails:
+    properties:
+      deploy_file_path:
+        description: 部署文件路径
+        type: string
+      message:
+        description: 消息
+        type: string
+      status:
+        description: 状态
+        type: string
+    type: object
+  meta-app-service_models.MetaAppDeployFileContent:
+    properties:
+      code:
+        description: Code pinId
+        type: string
+      content:
+        description: Content pinId
+        type: string
+      content_type:
+        description: 内容类型
+        type: string
+      created_at:
+        description: 创建时间
+        type: string
+      deploy_file_path:
+        description: 部署文件路径
+        type: string
+      deploy_message:
+        description: 部署消息（错误信息等）
+        type: string
+      deploy_status:
+        description: '部署状态: pending/processing/completed/failed'
+        type: string
+      first_pin_id:
+        description: 第一个 PIN ID
+        type: string
+      pin_id:
+        description: MetaApp PinID
+        type: string
+      updated_at:
+        description: 更新时间
+        type: string
+      version:
+        description: 版本号
+        type: string
+    type: object
+  meta-app-service_service_indexer_service.MetaAppWithDeploy:
+    properties:
+      app_name:
+        description: 应用名称
+        type: string
+      block_height:
+        description: 区块高度
+        type: integer
+      chain_name:
+        description: 链信息
+        type: string
+      code:
+        description: 代码 (metafile://pinid)
+        type: string
+      content:
+        description: 内容 (pinid)
+        type: string
+      content_hash:
+        description: 内容哈希
+        type: string
+      content_type:
+        description: '内容类型: /protocols/metatree'
+        type: string
+      cover_img:
+        description: 封面图片 (metafile://pinid)
+        type: string
+      created_at:
+        description: 时间戳
+        type: string
+      creator_address:
+        description: 创建者地址
+        type: string
+      creator_meta_id:
+        description: 创建者信息
+        type: string
+      deploy_info:
+        $ref: '#/definitions/meta-app-service_models.MetaAppDeployFileContent'
+      disabled:
+        description: 是否禁用
+        type: boolean
+      first_pin_id:
+        description: 基础信息
+        type: string
+      icon:
+        description: 图标 (metafile://pinid)
+        type: string
+      index_file:
+        description: 入口文件
+        type: string
+      intro:
+        description: 应用介绍
+        type: string
+      intro_imgs:
+        description: 介绍图片列表 (metafile://pinid)
+        items:
+          type: string
+        type: array
+      metadata:
+        description: 元数据 (JSON 字符串)
+        type: string
+      operation:
+        description: '操作类型: create/modify/revoke'
+        type: string
+      owner_address:
+        description: 拥有者地址
+        type: string
+      owner_meta_id:
+        description: 拥有者 MetaID
+        type: string
+      parent_path:
+        description: 父路径
+        type: string
+      path:
+        description: 路径
+        type: string
+      pin_id:
+        description: PIN ID (主键)
+        type: string
+      prompt:
+        description: 提示信息
+        type: string
+      runtime:
+        description: '运行环境: browser/android/ios/windows/macOS/Linux'
+        type: string
+      state:
+        description: 状态码
+        type: integer
+      status:
+        description: 状态信息
+        type: integer
+      timestamp:
+        description: 时间戳
+        type: integer
+      title:
+        description: MetaApp 协议字段
+        type: string
+      tx_id:
+        description: 交易 ID
+        type: string
+      updated_at:
+        description: 更新时间
+        type: string
+      version:
+        description: 版本号
+        type: string
+      vout:
+        description: 输出索引
+        type: integer
+    type: object
+host: localhost:7333
+info:
+  contact:
+    email: support@swagger.io
+    name: API Support
+    url: http://www.swagger.io/support
+  description: Meta App Service Indexer Service API, provides MetaApp query and deploy
+    functionality
+  license:
+    name: Apache 2.0
+    url: http://www.apache.org/licenses/LICENSE-2.0.html
+  termsOfService: http://swagger.io/terms/
+  title: Meta App Service Indexer API
+  version: "1.0"
+paths:
+  /api/v1/config:
+    get:
+      consumes:
+      - application/json
+      description: 获取前端需要的配置信息，如 Metafs Domain
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            allOf:
+            - $ref: '#/definitions/meta-app-service_controller_respond.Response'
+            - properties:
+                data:
+                  $ref: '#/definitions/meta-app-service_controller_respond.ConfigResponse'
+              type: object
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/meta-app-service_controller_respond.Response'
+      summary: 获取配置信息
+      tags:
+      - Indexer Status
+  /api/v1/deploy-queue:
+    get:
+      consumes:
+      - application/json
+      description: 获取部署队列列表，按时间戳倒序排列，支持分页
+      parameters:
+      - default: 0
+        description: 游标（从 0 开始）
+        in: query
+        name: cursor
+        type: integer
+      - default: 20
+        description: 每页大小
+        in: query
+        name: size
+        type: integer
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            allOf:
+            - $ref: '#/definitions/meta-app-service_controller_respond.Response'
+            - properties:
+                data:
+                  $ref: '#/definitions/meta-app-service_controller_respond.DeployQueueListResponse'
+              type: object
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/meta-app-service_controller_respond.Response'
+      summary: 获取部署队列列表
+      tags:
+      - Deploy Queue
+  /api/v1/metaapps:
+    get:
+      consumes:
+      - application/json
+      description: 获取所有 MetaApp 列表，按时间倒序排列，支持分页
+      parameters:
+      - default: 0
+        description: 游标（从 0 开始）
+        in: query
+        name: cursor
+        type: integer
+      - default: 20
+        description: 每页大小
+        in: query
+        name: size
+        type: integer
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            allOf:
+            - $ref: '#/definitions/meta-app-service_controller_respond.Response'
+            - properties:
+                data:
+                  $ref: '#/definitions/meta-app-service_controller_respond.MetaAppListResponse'
+              type: object
+      summary: 获取 MetaApp 列表
+      tags:
+      - MetaApp
+  /api/v1/metaapps/{pinId}:
+    get:
+      consumes:
+      - application/json
+      description: 根据 PinID 获取 MetaApp 详细信息，包括部署情况
+      parameters:
+      - description: MetaApp PinID
+        in: path
+        name: pinId
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            allOf:
+            - $ref: '#/definitions/meta-app-service_controller_respond.Response'
+            - properties:
+                data:
+                  $ref: '#/definitions/meta-app-service_service_indexer_service.MetaAppWithDeploy'
+              type: object
+      summary: 根据 PinID 获取 MetaApp 详情
+      tags:
+      - MetaApp
+  /api/v1/metaapps/{pinId}/redeploy:
+    post:
+      consumes:
+      - application/json
+      description: 根据 PinID 重新将 MetaApp 加入部署队列
+      parameters:
+      - description: MetaApp PinID
+        in: path
+        name: pinId
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/meta-app-service_controller_respond.Response'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/meta-app-service_controller_respond.Response'
+        "404":
+          description: Not Found
+          schema:
+            $ref: '#/definitions/meta-app-service_controller_respond.Response'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/meta-app-service_controller_respond.Response'
+      summary: 重新部署 MetaApp
+      tags:
+      - MetaApp
+  /api/v1/metaapps/creator/{metaId}:
+    get:
+      consumes:
+      - application/json
+      description: 根据创建者 MetaID 获取 MetaApp 列表，包括部署情况，按时间倒序排列，支持分页
+      parameters:
+      - description: 创建者 MetaID
+        in: path
+        name: metaId
+        required: true
+        type: string
+      - default: 0
+        description: 游标（从 0 开始）
+        in: query
+        name: cursor
+        type: integer
+      - default: 20
+        description: 每页大小
+        in: query
+        name: size
+        type: integer
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            allOf:
+            - $ref: '#/definitions/meta-app-service_controller_respond.Response'
+            - properties:
+                data:
+                  $ref: '#/definitions/meta-app-service_controller_respond.MetaAppListResponse'
+              type: object
+      summary: 根据 MetaID 获取 MetaApp 列表
+      tags:
+      - MetaApp
+  /api/v1/metaapps/first/{firstPinId}:
+    get:
+      consumes:
+      - application/json
+      description: 根据 FirstPinID 获取最新的 MetaApp 详细信息，包括部署情况
+      parameters:
+      - description: MetaApp FirstPinID
+        in: path
+        name: firstPinId
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            allOf:
+            - $ref: '#/definitions/meta-app-service_controller_respond.Response'
+            - properties:
+                data:
+                  $ref: '#/definitions/meta-app-service_controller_respond.MetaAppResponse'
+              type: object
+      summary: 根据 FirstPinID 获取最新的 MetaApp 详情
+      tags:
+      - MetaApp
+  /api/v1/metaapps/first/{firstPinId}/download:
+    get:
+      consumes:
+      - application/json
+      description: 根据 FirstPinID 压缩对应的部署文件夹并下载为 zip 文件
+      parameters:
+      - description: MetaApp FirstPinID
+        in: path
+        name: firstPinId
+        required: true
+        type: string
+      produces:
+      - application/zip
+      responses:
+        "200":
+          description: zip file
+          schema:
+            type: file
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/meta-app-service_controller_respond.Response'
+        "404":
+          description: Not Found
+          schema:
+            $ref: '#/definitions/meta-app-service_controller_respond.Response'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/meta-app-service_controller_respond.Response'
+      summary: 下载 MetaApp 部署文件为 zip
+      tags:
+      - MetaApp
+  /api/v1/metaapps/first/{firstPinId}/history:
+    get:
+      consumes:
+      - application/json
+      description: 根据 FirstPinID 获取 MetaApp 的所有历史版本列表
+      parameters:
+      - description: MetaApp FirstPinID
+        in: path
+        name: firstPinId
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            allOf:
+            - $ref: '#/definitions/meta-app-service_controller_respond.Response'
+            - properties:
+                data:
+                  $ref: '#/definitions/meta-app-service_controller_respond.MetaAppHistoryResponse'
+              type: object
+      summary: 根据 FirstPinID 获取 MetaApp 历史版本列表
+      tags:
+      - MetaApp
+  /api/v1/stats:
+    get:
+      consumes:
+      - application/json
+      description: 获取索引器统计信息（当前已同步的 MetaApp 总数）
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            allOf:
+            - $ref: '#/definitions/meta-app-service_controller_respond.Response'
+            - properties:
+                data:
+                  $ref: '#/definitions/meta-app-service_controller_respond.IndexerStatsResponse'
+              type: object
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/meta-app-service_controller_respond.Response'
+      summary: 获取统计信息
+      tags:
+      - Indexer Status
+  /api/v1/status:
+    get:
+      consumes:
+      - application/json
+      description: 获取索引器同步状态（包括从节点获取的最新区块高度）
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            allOf:
+            - $ref: '#/definitions/meta-app-service_controller_respond.Response'
+            - properties:
+                data:
+                  $ref: '#/definitions/meta-app-service_controller_respond.IndexerSyncStatusResponse'
+              type: object
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/meta-app-service_controller_respond.Response'
+      summary: 获取同步状态
+      tags:
+      - Indexer Status
+  /api/v1/temp-apps/{tokenId}:
+    get:
+      consumes:
+      - application/json
+      description: 根据 TokenID 获取临时应用的部署信息
+      parameters:
+      - description: 临时应用 TokenID
+        in: path
+        name: tokenId
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            allOf:
+            - $ref: '#/definitions/meta-app-service_controller_respond.Response'
+            - properties:
+                data:
+                  $ref: '#/definitions/meta-app-service_controller_respond.TempAppDeployResponse'
+              type: object
+        "404":
+          description: Not Found
+          schema:
+            $ref: '#/definitions/meta-app-service_controller_respond.Response'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/meta-app-service_controller_respond.Response'
+      summary: 根据 TokenID 获取临时应用部署信息
+      tags:
+      - TempApp
+  /api/v1/temp-apps/chunk/{uploadId}/{chunkIndex}:
+    post:
+      consumes:
+      - multipart/form-data
+      description: 上传单个分片数据
+      parameters:
+      - description: 上传 ID
+        in: path
+        name: uploadId
+        required: true
+        type: string
+      - description: 分片索引（从 0 开始）
+        in: path
+        name: chunkIndex
+        required: true
+        type: integer
+      - description: 分片数据
+        in: formData
+        name: chunk
+        required: true
+        type: file
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/meta-app-service_controller_respond.Response'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/meta-app-service_controller_respond.Response'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/meta-app-service_controller_respond.Response'
+      summary: 上传分片
+      tags:
+      - TempApp
+  /api/v1/temp-apps/chunk/{uploadId}/merge:
+    post:
+      consumes:
+      - application/json
+      description: 合并所有分片并解压，创建临时应用部署
+      parameters:
+      - description: 上传 ID
+        in: path
+        name: uploadId
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            allOf:
+            - $ref: '#/definitions/meta-app-service_controller_respond.Response'
+            - properties:
+                data:
+                  $ref: '#/definitions/meta-app-service_controller_respond.TempAppDeployResponse'
+              type: object
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/meta-app-service_controller_respond.Response'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/meta-app-service_controller_respond.Response'
+      summary: 合并分片
+      tags:
+      - TempApp
+  /api/v1/temp-apps/chunk/{uploadId}/status:
+    get:
+      consumes:
+      - application/json
+      description: 查询分片上传的状态和进度
+      parameters:
+      - description: 上传 ID
+        in: path
+        name: uploadId
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            allOf:
+            - $ref: '#/definitions/meta-app-service_controller_respond.Response'
+            - properties:
+                data:
+                  $ref: '#/definitions/meta-app-service_controller_respond.TempAppChunkUploadResponse'
+              type: object
+        "404":
+          description: Not Found
+          schema:
+            $ref: '#/definitions/meta-app-service_controller_respond.Response'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/meta-app-service_controller_respond.Response'
+      summary: 获取分片上传状态
+      tags:
+      - TempApp
+  /api/v1/temp-apps/chunk/init:
+    post:
+      consumes:
+      - application/json
+      description: 初始化分片上传，返回 uploadId 和分片信息
+      parameters:
+      - description: 文件总大小（字节）
+        in: formData
+        name: total_size
+        required: true
+        type: integer
+      - description: 文件名
+        in: formData
+        name: filename
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            allOf:
+            - $ref: '#/definitions/meta-app-service_controller_respond.Response'
+            - properties:
+                data:
+                  $ref: '#/definitions/meta-app-service_controller_respond.TempAppChunkInitResponse'
+              type: object
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/meta-app-service_controller_respond.Response'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/meta-app-service_controller_respond.Response'
+      summary: 初始化分片上传
+      tags:
+      - TempApp
+  /api/v1/temp-apps/upload:
+    post:
+      consumes:
+      - multipart/form-data
+      description: 上传 zip 包，生成唯一 tokenId，解压并保存，返回部署信息
+      parameters:
+      - description: zip 文件
+        in: formData
+        name: file
+        required: true
+        type: file
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            allOf:
+            - $ref: '#/definitions/meta-app-service_controller_respond.Response'
+            - properties:
+                data:
+                  $ref: '#/definitions/meta-app-service_controller_respond.TempAppDeployResponse'
+              type: object
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/meta-app-service_controller_respond.Response'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/meta-app-service_controller_respond.Response'
+      summary: 上传临时应用 zip 包
+      tags:
+      - TempApp
+schemes:
+- https
+- http
+swagger: "2.0"

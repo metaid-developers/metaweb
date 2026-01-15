@@ -1,0 +1,1487 @@
+{
+    "schemes": [
+        "https",
+        "http"
+    ],
+    "swagger": "2.0",
+    "info": {
+        "description": "Meta App Service Indexer Service API, provides MetaApp query and deploy functionality",
+        "title": "Meta App Service Indexer API",
+        "termsOfService": "http://swagger.io/terms/",
+        "contact": {
+            "name": "API Support",
+            "url": "http://www.swagger.io/support",
+            "email": "support@swagger.io"
+        },
+        "license": {
+            "name": "Apache 2.0",
+            "url": "http://www.apache.org/licenses/LICENSE-2.0.html"
+        },
+        "version": "1.0"
+    },
+    "host": "localhost:7333",
+    "basePath": "/",
+    "paths": {
+        "/api/v1/config": {
+            "get": {
+                "description": "获取前端需要的配置信息，如 Metafs Domain",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "Indexer Status"
+                ],
+                "summary": "获取配置信息",
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "allOf": [
+                                {
+                                    "$ref": "#/definitions/meta-app-service_controller_respond.Response"
+                                },
+                                {
+                                    "type": "object",
+                                    "properties": {
+                                        "data": {
+                                            "$ref": "#/definitions/meta-app-service_controller_respond.ConfigResponse"
+                                        }
+                                    }
+                                }
+                            ]
+                        }
+                    },
+                    "500": {
+                        "description": "Internal Server Error",
+                        "schema": {
+                            "$ref": "#/definitions/meta-app-service_controller_respond.Response"
+                        }
+                    }
+                }
+            }
+        },
+        "/api/v1/deploy-queue": {
+            "get": {
+                "description": "获取部署队列列表，按时间戳倒序排列，支持分页",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "Deploy Queue"
+                ],
+                "summary": "获取部署队列列表",
+                "parameters": [
+                    {
+                        "type": "integer",
+                        "default": 0,
+                        "description": "游标（从 0 开始）",
+                        "name": "cursor",
+                        "in": "query"
+                    },
+                    {
+                        "type": "integer",
+                        "default": 20,
+                        "description": "每页大小",
+                        "name": "size",
+                        "in": "query"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "allOf": [
+                                {
+                                    "$ref": "#/definitions/meta-app-service_controller_respond.Response"
+                                },
+                                {
+                                    "type": "object",
+                                    "properties": {
+                                        "data": {
+                                            "$ref": "#/definitions/meta-app-service_controller_respond.DeployQueueListResponse"
+                                        }
+                                    }
+                                }
+                            ]
+                        }
+                    },
+                    "500": {
+                        "description": "Internal Server Error",
+                        "schema": {
+                            "$ref": "#/definitions/meta-app-service_controller_respond.Response"
+                        }
+                    }
+                }
+            }
+        },
+        "/api/v1/metaapps": {
+            "get": {
+                "description": "获取所有 MetaApp 列表，按时间倒序排列，支持分页",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "MetaApp"
+                ],
+                "summary": "获取 MetaApp 列表",
+                "parameters": [
+                    {
+                        "type": "integer",
+                        "default": 0,
+                        "description": "游标（从 0 开始）",
+                        "name": "cursor",
+                        "in": "query"
+                    },
+                    {
+                        "type": "integer",
+                        "default": 20,
+                        "description": "每页大小",
+                        "name": "size",
+                        "in": "query"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "allOf": [
+                                {
+                                    "$ref": "#/definitions/meta-app-service_controller_respond.Response"
+                                },
+                                {
+                                    "type": "object",
+                                    "properties": {
+                                        "data": {
+                                            "$ref": "#/definitions/meta-app-service_controller_respond.MetaAppListResponse"
+                                        }
+                                    }
+                                }
+                            ]
+                        }
+                    }
+                }
+            }
+        },
+        "/api/v1/metaapps/creator/{metaId}": {
+            "get": {
+                "description": "根据创建者 MetaID 获取 MetaApp 列表，包括部署情况，按时间倒序排列，支持分页",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "MetaApp"
+                ],
+                "summary": "根据 MetaID 获取 MetaApp 列表",
+                "parameters": [
+                    {
+                        "type": "string",
+                        "description": "创建者 MetaID",
+                        "name": "metaId",
+                        "in": "path",
+                        "required": true
+                    },
+                    {
+                        "type": "integer",
+                        "default": 0,
+                        "description": "游标（从 0 开始）",
+                        "name": "cursor",
+                        "in": "query"
+                    },
+                    {
+                        "type": "integer",
+                        "default": 20,
+                        "description": "每页大小",
+                        "name": "size",
+                        "in": "query"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "allOf": [
+                                {
+                                    "$ref": "#/definitions/meta-app-service_controller_respond.Response"
+                                },
+                                {
+                                    "type": "object",
+                                    "properties": {
+                                        "data": {
+                                            "$ref": "#/definitions/meta-app-service_controller_respond.MetaAppListResponse"
+                                        }
+                                    }
+                                }
+                            ]
+                        }
+                    }
+                }
+            }
+        },
+        "/api/v1/metaapps/first/{firstPinId}": {
+            "get": {
+                "description": "根据 FirstPinID 获取最新的 MetaApp 详细信息，包括部署情况",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "MetaApp"
+                ],
+                "summary": "根据 FirstPinID 获取最新的 MetaApp 详情",
+                "parameters": [
+                    {
+                        "type": "string",
+                        "description": "MetaApp FirstPinID",
+                        "name": "firstPinId",
+                        "in": "path",
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "allOf": [
+                                {
+                                    "$ref": "#/definitions/meta-app-service_controller_respond.Response"
+                                },
+                                {
+                                    "type": "object",
+                                    "properties": {
+                                        "data": {
+                                            "$ref": "#/definitions/meta-app-service_controller_respond.MetaAppResponse"
+                                        }
+                                    }
+                                }
+                            ]
+                        }
+                    }
+                }
+            }
+        },
+        "/api/v1/metaapps/first/{firstPinId}/download": {
+            "get": {
+                "description": "根据 FirstPinID 压缩对应的部署文件夹并下载为 zip 文件",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/zip"
+                ],
+                "tags": [
+                    "MetaApp"
+                ],
+                "summary": "下载 MetaApp 部署文件为 zip",
+                "parameters": [
+                    {
+                        "type": "string",
+                        "description": "MetaApp FirstPinID",
+                        "name": "firstPinId",
+                        "in": "path",
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "zip file",
+                        "schema": {
+                            "type": "file"
+                        }
+                    },
+                    "400": {
+                        "description": "Bad Request",
+                        "schema": {
+                            "$ref": "#/definitions/meta-app-service_controller_respond.Response"
+                        }
+                    },
+                    "404": {
+                        "description": "Not Found",
+                        "schema": {
+                            "$ref": "#/definitions/meta-app-service_controller_respond.Response"
+                        }
+                    },
+                    "500": {
+                        "description": "Internal Server Error",
+                        "schema": {
+                            "$ref": "#/definitions/meta-app-service_controller_respond.Response"
+                        }
+                    }
+                }
+            }
+        },
+        "/api/v1/metaapps/first/{firstPinId}/history": {
+            "get": {
+                "description": "根据 FirstPinID 获取 MetaApp 的所有历史版本列表",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "MetaApp"
+                ],
+                "summary": "根据 FirstPinID 获取 MetaApp 历史版本列表",
+                "parameters": [
+                    {
+                        "type": "string",
+                        "description": "MetaApp FirstPinID",
+                        "name": "firstPinId",
+                        "in": "path",
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "allOf": [
+                                {
+                                    "$ref": "#/definitions/meta-app-service_controller_respond.Response"
+                                },
+                                {
+                                    "type": "object",
+                                    "properties": {
+                                        "data": {
+                                            "$ref": "#/definitions/meta-app-service_controller_respond.MetaAppHistoryResponse"
+                                        }
+                                    }
+                                }
+                            ]
+                        }
+                    }
+                }
+            }
+        },
+        "/api/v1/metaapps/{pinId}": {
+            "get": {
+                "description": "根据 PinID 获取 MetaApp 详细信息，包括部署情况",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "MetaApp"
+                ],
+                "summary": "根据 PinID 获取 MetaApp 详情",
+                "parameters": [
+                    {
+                        "type": "string",
+                        "description": "MetaApp PinID",
+                        "name": "pinId",
+                        "in": "path",
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "allOf": [
+                                {
+                                    "$ref": "#/definitions/meta-app-service_controller_respond.Response"
+                                },
+                                {
+                                    "type": "object",
+                                    "properties": {
+                                        "data": {
+                                            "$ref": "#/definitions/meta-app-service_service_indexer_service.MetaAppWithDeploy"
+                                        }
+                                    }
+                                }
+                            ]
+                        }
+                    }
+                }
+            }
+        },
+        "/api/v1/metaapps/{pinId}/redeploy": {
+            "post": {
+                "description": "根据 PinID 重新将 MetaApp 加入部署队列",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "MetaApp"
+                ],
+                "summary": "重新部署 MetaApp",
+                "parameters": [
+                    {
+                        "type": "string",
+                        "description": "MetaApp PinID",
+                        "name": "pinId",
+                        "in": "path",
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/meta-app-service_controller_respond.Response"
+                        }
+                    },
+                    "400": {
+                        "description": "Bad Request",
+                        "schema": {
+                            "$ref": "#/definitions/meta-app-service_controller_respond.Response"
+                        }
+                    },
+                    "404": {
+                        "description": "Not Found",
+                        "schema": {
+                            "$ref": "#/definitions/meta-app-service_controller_respond.Response"
+                        }
+                    },
+                    "500": {
+                        "description": "Internal Server Error",
+                        "schema": {
+                            "$ref": "#/definitions/meta-app-service_controller_respond.Response"
+                        }
+                    }
+                }
+            }
+        },
+        "/api/v1/stats": {
+            "get": {
+                "description": "获取索引器统计信息（当前已同步的 MetaApp 总数）",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "Indexer Status"
+                ],
+                "summary": "获取统计信息",
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "allOf": [
+                                {
+                                    "$ref": "#/definitions/meta-app-service_controller_respond.Response"
+                                },
+                                {
+                                    "type": "object",
+                                    "properties": {
+                                        "data": {
+                                            "$ref": "#/definitions/meta-app-service_controller_respond.IndexerStatsResponse"
+                                        }
+                                    }
+                                }
+                            ]
+                        }
+                    },
+                    "500": {
+                        "description": "Internal Server Error",
+                        "schema": {
+                            "$ref": "#/definitions/meta-app-service_controller_respond.Response"
+                        }
+                    }
+                }
+            }
+        },
+        "/api/v1/status": {
+            "get": {
+                "description": "获取索引器同步状态（包括从节点获取的最新区块高度）",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "Indexer Status"
+                ],
+                "summary": "获取同步状态",
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "allOf": [
+                                {
+                                    "$ref": "#/definitions/meta-app-service_controller_respond.Response"
+                                },
+                                {
+                                    "type": "object",
+                                    "properties": {
+                                        "data": {
+                                            "$ref": "#/definitions/meta-app-service_controller_respond.IndexerSyncStatusResponse"
+                                        }
+                                    }
+                                }
+                            ]
+                        }
+                    },
+                    "500": {
+                        "description": "Internal Server Error",
+                        "schema": {
+                            "$ref": "#/definitions/meta-app-service_controller_respond.Response"
+                        }
+                    }
+                }
+            }
+        },
+        "/api/v1/temp-apps/chunk/init": {
+            "post": {
+                "description": "初始化分片上传，返回 uploadId 和分片信息",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "TempApp"
+                ],
+                "summary": "初始化分片上传",
+                "parameters": [
+                    {
+                        "type": "integer",
+                        "description": "文件总大小（字节）",
+                        "name": "total_size",
+                        "in": "formData",
+                        "required": true
+                    },
+                    {
+                        "type": "string",
+                        "description": "文件名",
+                        "name": "filename",
+                        "in": "formData"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "allOf": [
+                                {
+                                    "$ref": "#/definitions/meta-app-service_controller_respond.Response"
+                                },
+                                {
+                                    "type": "object",
+                                    "properties": {
+                                        "data": {
+                                            "$ref": "#/definitions/meta-app-service_controller_respond.TempAppChunkInitResponse"
+                                        }
+                                    }
+                                }
+                            ]
+                        }
+                    },
+                    "400": {
+                        "description": "Bad Request",
+                        "schema": {
+                            "$ref": "#/definitions/meta-app-service_controller_respond.Response"
+                        }
+                    },
+                    "500": {
+                        "description": "Internal Server Error",
+                        "schema": {
+                            "$ref": "#/definitions/meta-app-service_controller_respond.Response"
+                        }
+                    }
+                }
+            }
+        },
+        "/api/v1/temp-apps/chunk/{uploadId}/merge": {
+            "post": {
+                "description": "合并所有分片并解压，创建临时应用部署",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "TempApp"
+                ],
+                "summary": "合并分片",
+                "parameters": [
+                    {
+                        "type": "string",
+                        "description": "上传 ID",
+                        "name": "uploadId",
+                        "in": "path",
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "allOf": [
+                                {
+                                    "$ref": "#/definitions/meta-app-service_controller_respond.Response"
+                                },
+                                {
+                                    "type": "object",
+                                    "properties": {
+                                        "data": {
+                                            "$ref": "#/definitions/meta-app-service_controller_respond.TempAppDeployResponse"
+                                        }
+                                    }
+                                }
+                            ]
+                        }
+                    },
+                    "400": {
+                        "description": "Bad Request",
+                        "schema": {
+                            "$ref": "#/definitions/meta-app-service_controller_respond.Response"
+                        }
+                    },
+                    "500": {
+                        "description": "Internal Server Error",
+                        "schema": {
+                            "$ref": "#/definitions/meta-app-service_controller_respond.Response"
+                        }
+                    }
+                }
+            }
+        },
+        "/api/v1/temp-apps/chunk/{uploadId}/status": {
+            "get": {
+                "description": "查询分片上传的状态和进度",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "TempApp"
+                ],
+                "summary": "获取分片上传状态",
+                "parameters": [
+                    {
+                        "type": "string",
+                        "description": "上传 ID",
+                        "name": "uploadId",
+                        "in": "path",
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "allOf": [
+                                {
+                                    "$ref": "#/definitions/meta-app-service_controller_respond.Response"
+                                },
+                                {
+                                    "type": "object",
+                                    "properties": {
+                                        "data": {
+                                            "$ref": "#/definitions/meta-app-service_controller_respond.TempAppChunkUploadResponse"
+                                        }
+                                    }
+                                }
+                            ]
+                        }
+                    },
+                    "404": {
+                        "description": "Not Found",
+                        "schema": {
+                            "$ref": "#/definitions/meta-app-service_controller_respond.Response"
+                        }
+                    },
+                    "500": {
+                        "description": "Internal Server Error",
+                        "schema": {
+                            "$ref": "#/definitions/meta-app-service_controller_respond.Response"
+                        }
+                    }
+                }
+            }
+        },
+        "/api/v1/temp-apps/chunk/{uploadId}/{chunkIndex}": {
+            "post": {
+                "description": "上传单个分片数据",
+                "consumes": [
+                    "multipart/form-data"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "TempApp"
+                ],
+                "summary": "上传分片",
+                "parameters": [
+                    {
+                        "type": "string",
+                        "description": "上传 ID",
+                        "name": "uploadId",
+                        "in": "path",
+                        "required": true
+                    },
+                    {
+                        "type": "integer",
+                        "description": "分片索引（从 0 开始）",
+                        "name": "chunkIndex",
+                        "in": "path",
+                        "required": true
+                    },
+                    {
+                        "type": "file",
+                        "description": "分片数据",
+                        "name": "chunk",
+                        "in": "formData",
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/meta-app-service_controller_respond.Response"
+                        }
+                    },
+                    "400": {
+                        "description": "Bad Request",
+                        "schema": {
+                            "$ref": "#/definitions/meta-app-service_controller_respond.Response"
+                        }
+                    },
+                    "500": {
+                        "description": "Internal Server Error",
+                        "schema": {
+                            "$ref": "#/definitions/meta-app-service_controller_respond.Response"
+                        }
+                    }
+                }
+            }
+        },
+        "/api/v1/temp-apps/upload": {
+            "post": {
+                "description": "上传 zip 包，生成唯一 tokenId，解压并保存，返回部署信息",
+                "consumes": [
+                    "multipart/form-data"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "TempApp"
+                ],
+                "summary": "上传临时应用 zip 包",
+                "parameters": [
+                    {
+                        "type": "file",
+                        "description": "zip 文件",
+                        "name": "file",
+                        "in": "formData",
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "allOf": [
+                                {
+                                    "$ref": "#/definitions/meta-app-service_controller_respond.Response"
+                                },
+                                {
+                                    "type": "object",
+                                    "properties": {
+                                        "data": {
+                                            "$ref": "#/definitions/meta-app-service_controller_respond.TempAppDeployResponse"
+                                        }
+                                    }
+                                }
+                            ]
+                        }
+                    },
+                    "400": {
+                        "description": "Bad Request",
+                        "schema": {
+                            "$ref": "#/definitions/meta-app-service_controller_respond.Response"
+                        }
+                    },
+                    "500": {
+                        "description": "Internal Server Error",
+                        "schema": {
+                            "$ref": "#/definitions/meta-app-service_controller_respond.Response"
+                        }
+                    }
+                }
+            }
+        },
+        "/api/v1/temp-apps/{tokenId}": {
+            "get": {
+                "description": "根据 TokenID 获取临时应用的部署信息",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "TempApp"
+                ],
+                "summary": "根据 TokenID 获取临时应用部署信息",
+                "parameters": [
+                    {
+                        "type": "string",
+                        "description": "临时应用 TokenID",
+                        "name": "tokenId",
+                        "in": "path",
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "allOf": [
+                                {
+                                    "$ref": "#/definitions/meta-app-service_controller_respond.Response"
+                                },
+                                {
+                                    "type": "object",
+                                    "properties": {
+                                        "data": {
+                                            "$ref": "#/definitions/meta-app-service_controller_respond.TempAppDeployResponse"
+                                        }
+                                    }
+                                }
+                            ]
+                        }
+                    },
+                    "404": {
+                        "description": "Not Found",
+                        "schema": {
+                            "$ref": "#/definitions/meta-app-service_controller_respond.Response"
+                        }
+                    },
+                    "500": {
+                        "description": "Internal Server Error",
+                        "schema": {
+                            "$ref": "#/definitions/meta-app-service_controller_respond.Response"
+                        }
+                    }
+                }
+            }
+        }
+    },
+    "definitions": {
+        "meta-app-service_controller_respond.ConfigResponse": {
+            "type": "object",
+            "properties": {
+                "metafs_domain": {
+                    "type": "string",
+                    "example": "http://localhost:7281"
+                }
+            }
+        },
+        "meta-app-service_controller_respond.DeployQueueListResponse": {
+            "type": "object",
+            "properties": {
+                "has_more": {
+                    "type": "boolean",
+                    "example": true
+                },
+                "next_cursor": {
+                    "type": "integer",
+                    "example": 100
+                },
+                "queues": {
+                    "type": "array",
+                    "items": {
+                        "$ref": "#/definitions/meta-app-service_controller_respond.DeployQueueResponse"
+                    }
+                }
+            }
+        },
+        "meta-app-service_controller_respond.DeployQueueResponse": {
+            "type": "object",
+            "properties": {
+                "code": {
+                    "type": "string"
+                },
+                "content": {
+                    "type": "string"
+                },
+                "content_type": {
+                    "type": "string"
+                },
+                "created_at": {
+                    "type": "string"
+                },
+                "first_pin_id": {
+                    "type": "string"
+                },
+                "pin_id": {
+                    "type": "string"
+                },
+                "timestamp": {
+                    "type": "integer"
+                },
+                "try_count": {
+                    "type": "integer"
+                },
+                "version": {
+                    "type": "string"
+                }
+            }
+        },
+        "meta-app-service_controller_respond.IndexerStatsResponse": {
+            "type": "object",
+            "properties": {
+                "total_apps": {
+                    "type": "integer",
+                    "example": 12345
+                }
+            }
+        },
+        "meta-app-service_controller_respond.IndexerSyncStatusResponse": {
+            "type": "object",
+            "properties": {
+                "chain_name": {
+                    "description": "ID                int64     `json:\"id\" example:\"1\"`",
+                    "type": "string",
+                    "example": "mvc"
+                },
+                "created_at": {
+                    "type": "string",
+                    "example": "2024-01-01T00:00:00Z"
+                },
+                "current_sync_height": {
+                    "type": "integer",
+                    "example": 12345
+                },
+                "latest_block_height": {
+                    "type": "integer",
+                    "example": 12350
+                },
+                "updated_at": {
+                    "type": "string",
+                    "example": "2024-01-01T00:00:00Z"
+                }
+            }
+        },
+        "meta-app-service_controller_respond.MetaAppHistoryResponse": {
+            "type": "object",
+            "properties": {
+                "history": {
+                    "type": "array",
+                    "items": {
+                        "$ref": "#/definitions/meta-app-service_controller_respond.MetaAppResponse"
+                    }
+                }
+            }
+        },
+        "meta-app-service_controller_respond.MetaAppListResponse": {
+            "type": "object",
+            "properties": {
+                "apps": {
+                    "type": "array",
+                    "items": {
+                        "$ref": "#/definitions/meta-app-service_controller_respond.MetaAppResponse"
+                    }
+                },
+                "has_more": {
+                    "type": "boolean",
+                    "example": true
+                },
+                "next_cursor": {
+                    "type": "integer",
+                    "example": 100
+                }
+            }
+        },
+        "meta-app-service_controller_respond.MetaAppResponse": {
+            "type": "object",
+            "properties": {
+                "app_name": {
+                    "description": "应用名称",
+                    "type": "string"
+                },
+                "block_height": {
+                    "description": "区块高度",
+                    "type": "integer"
+                },
+                "chain_name": {
+                    "description": "链信息",
+                    "type": "string"
+                },
+                "code": {
+                    "description": "代码 (metafile://pinid)",
+                    "type": "string"
+                },
+                "content": {
+                    "description": "内容 (pinid)",
+                    "type": "string"
+                },
+                "content_hash": {
+                    "description": "内容哈希",
+                    "type": "string"
+                },
+                "content_type": {
+                    "description": "内容类型: /protocols/metatree",
+                    "type": "string"
+                },
+                "cover_img": {
+                    "description": "封面图片 (metafile://pinid)",
+                    "type": "string"
+                },
+                "created_at": {
+                    "description": "时间戳",
+                    "type": "string"
+                },
+                "creator_address": {
+                    "description": "创建者地址",
+                    "type": "string"
+                },
+                "creator_meta_id": {
+                    "description": "创建者信息",
+                    "type": "string"
+                },
+                "deploy_info": {
+                    "$ref": "#/definitions/meta-app-service_models.MetaAppDeployFileContent"
+                },
+                "disabled": {
+                    "description": "是否禁用",
+                    "type": "boolean"
+                },
+                "first_pin_id": {
+                    "description": "基础信息",
+                    "type": "string"
+                },
+                "icon": {
+                    "description": "图标 (metafile://pinid)",
+                    "type": "string"
+                },
+                "index_file": {
+                    "description": "入口文件",
+                    "type": "string"
+                },
+                "intro": {
+                    "description": "应用介绍",
+                    "type": "string"
+                },
+                "intro_imgs": {
+                    "description": "介绍图片列表 (metafile://pinid)",
+                    "type": "array",
+                    "items": {
+                        "type": "string"
+                    }
+                },
+                "metadata": {
+                    "description": "元数据 (JSON 字符串)",
+                    "type": "string"
+                },
+                "operation": {
+                    "description": "操作类型: create/modify/revoke",
+                    "type": "string"
+                },
+                "owner_address": {
+                    "description": "拥有者地址",
+                    "type": "string"
+                },
+                "owner_meta_id": {
+                    "description": "拥有者 MetaID",
+                    "type": "string"
+                },
+                "parent_path": {
+                    "description": "父路径",
+                    "type": "string"
+                },
+                "path": {
+                    "description": "路径",
+                    "type": "string"
+                },
+                "pin_id": {
+                    "description": "PIN ID (主键)",
+                    "type": "string"
+                },
+                "prompt": {
+                    "description": "提示信息",
+                    "type": "string"
+                },
+                "runtime": {
+                    "description": "运行环境: browser/android/ios/windows/macOS/Linux",
+                    "type": "string"
+                },
+                "state": {
+                    "description": "状态码",
+                    "type": "integer"
+                },
+                "status": {
+                    "description": "状态信息",
+                    "type": "integer"
+                },
+                "timestamp": {
+                    "description": "时间戳",
+                    "type": "integer"
+                },
+                "title": {
+                    "description": "MetaApp 协议字段",
+                    "type": "string"
+                },
+                "tx_id": {
+                    "description": "交易 ID",
+                    "type": "string"
+                },
+                "updated_at": {
+                    "description": "更新时间",
+                    "type": "string"
+                },
+                "version": {
+                    "description": "版本号",
+                    "type": "string"
+                },
+                "vout": {
+                    "description": "输出索引",
+                    "type": "integer"
+                }
+            }
+        },
+        "meta-app-service_controller_respond.Response": {
+            "description": "Unified API response structure",
+            "type": "object",
+            "properties": {
+                "code": {
+                    "type": "integer",
+                    "example": 0
+                },
+                "data": {},
+                "message": {
+                    "type": "string",
+                    "example": "success"
+                },
+                "processingTime": {
+                    "type": "integer",
+                    "example": 123
+                }
+            }
+        },
+        "meta-app-service_controller_respond.TempAppChunkInitResponse": {
+            "type": "object",
+            "properties": {
+                "chunk_size": {
+                    "description": "分片大小",
+                    "type": "integer"
+                },
+                "total_chunks": {
+                    "description": "总分片数",
+                    "type": "integer"
+                },
+                "upload_id": {
+                    "description": "上传 ID",
+                    "type": "string"
+                }
+            }
+        },
+        "meta-app-service_controller_respond.TempAppChunkUploadResponse": {
+            "type": "object",
+            "properties": {
+                "chunk_size": {
+                    "description": "分片大小",
+                    "type": "integer"
+                },
+                "message": {
+                    "description": "错误信息等",
+                    "type": "string"
+                },
+                "progress": {
+                    "description": "上传进度（0-100）",
+                    "type": "number"
+                },
+                "status": {
+                    "description": "状态: uploading/merging/completed/failed",
+                    "type": "string"
+                },
+                "token_id": {
+                    "description": "临时应用 TokenID（合并后生成）",
+                    "type": "string"
+                },
+                "total_chunks": {
+                    "description": "总分片数",
+                    "type": "integer"
+                },
+                "total_size": {
+                    "description": "总文件大小",
+                    "type": "integer"
+                },
+                "upload_id": {
+                    "description": "上传 ID",
+                    "type": "string"
+                },
+                "uploaded_chunks": {
+                    "description": "已上传的分片索引列表",
+                    "type": "array",
+                    "items": {
+                        "type": "integer"
+                    }
+                }
+            }
+        },
+        "meta-app-service_controller_respond.TempAppDeployResponse": {
+            "type": "object",
+            "properties": {
+                "deployment_details": {
+                    "description": "部署详情",
+                    "allOf": [
+                        {
+                            "$ref": "#/definitions/meta-app-service_controller_respond.TempAppDeploymentDetails"
+                        }
+                    ]
+                },
+                "expires_at": {
+                    "description": "过期时间",
+                    "type": "string"
+                },
+                "id": {
+                    "description": "TokenID",
+                    "type": "string"
+                },
+                "preview_url": {
+                    "description": "预览 URL（完整 URL）",
+                    "type": "string"
+                },
+                "url": {
+                    "description": "相对路径 URL",
+                    "type": "string"
+                }
+            }
+        },
+        "meta-app-service_controller_respond.TempAppDeploymentDetails": {
+            "type": "object",
+            "properties": {
+                "deploy_file_path": {
+                    "description": "部署文件路径",
+                    "type": "string"
+                },
+                "message": {
+                    "description": "消息",
+                    "type": "string"
+                },
+                "status": {
+                    "description": "状态",
+                    "type": "string"
+                }
+            }
+        },
+        "meta-app-service_models.MetaAppDeployFileContent": {
+            "type": "object",
+            "properties": {
+                "code": {
+                    "description": "Code pinId",
+                    "type": "string"
+                },
+                "content": {
+                    "description": "Content pinId",
+                    "type": "string"
+                },
+                "content_type": {
+                    "description": "内容类型",
+                    "type": "string"
+                },
+                "created_at": {
+                    "description": "创建时间",
+                    "type": "string"
+                },
+                "deploy_file_path": {
+                    "description": "部署文件路径",
+                    "type": "string"
+                },
+                "deploy_message": {
+                    "description": "部署消息（错误信息等）",
+                    "type": "string"
+                },
+                "deploy_status": {
+                    "description": "部署状态: pending/processing/completed/failed",
+                    "type": "string"
+                },
+                "first_pin_id": {
+                    "description": "第一个 PIN ID",
+                    "type": "string"
+                },
+                "pin_id": {
+                    "description": "MetaApp PinID",
+                    "type": "string"
+                },
+                "updated_at": {
+                    "description": "更新时间",
+                    "type": "string"
+                },
+                "version": {
+                    "description": "版本号",
+                    "type": "string"
+                }
+            }
+        },
+        "meta-app-service_service_indexer_service.MetaAppWithDeploy": {
+            "type": "object",
+            "properties": {
+                "app_name": {
+                    "description": "应用名称",
+                    "type": "string"
+                },
+                "block_height": {
+                    "description": "区块高度",
+                    "type": "integer"
+                },
+                "chain_name": {
+                    "description": "链信息",
+                    "type": "string"
+                },
+                "code": {
+                    "description": "代码 (metafile://pinid)",
+                    "type": "string"
+                },
+                "content": {
+                    "description": "内容 (pinid)",
+                    "type": "string"
+                },
+                "content_hash": {
+                    "description": "内容哈希",
+                    "type": "string"
+                },
+                "content_type": {
+                    "description": "内容类型: /protocols/metatree",
+                    "type": "string"
+                },
+                "cover_img": {
+                    "description": "封面图片 (metafile://pinid)",
+                    "type": "string"
+                },
+                "created_at": {
+                    "description": "时间戳",
+                    "type": "string"
+                },
+                "creator_address": {
+                    "description": "创建者地址",
+                    "type": "string"
+                },
+                "creator_meta_id": {
+                    "description": "创建者信息",
+                    "type": "string"
+                },
+                "deploy_info": {
+                    "$ref": "#/definitions/meta-app-service_models.MetaAppDeployFileContent"
+                },
+                "disabled": {
+                    "description": "是否禁用",
+                    "type": "boolean"
+                },
+                "first_pin_id": {
+                    "description": "基础信息",
+                    "type": "string"
+                },
+                "icon": {
+                    "description": "图标 (metafile://pinid)",
+                    "type": "string"
+                },
+                "index_file": {
+                    "description": "入口文件",
+                    "type": "string"
+                },
+                "intro": {
+                    "description": "应用介绍",
+                    "type": "string"
+                },
+                "intro_imgs": {
+                    "description": "介绍图片列表 (metafile://pinid)",
+                    "type": "array",
+                    "items": {
+                        "type": "string"
+                    }
+                },
+                "metadata": {
+                    "description": "元数据 (JSON 字符串)",
+                    "type": "string"
+                },
+                "operation": {
+                    "description": "操作类型: create/modify/revoke",
+                    "type": "string"
+                },
+                "owner_address": {
+                    "description": "拥有者地址",
+                    "type": "string"
+                },
+                "owner_meta_id": {
+                    "description": "拥有者 MetaID",
+                    "type": "string"
+                },
+                "parent_path": {
+                    "description": "父路径",
+                    "type": "string"
+                },
+                "path": {
+                    "description": "路径",
+                    "type": "string"
+                },
+                "pin_id": {
+                    "description": "PIN ID (主键)",
+                    "type": "string"
+                },
+                "prompt": {
+                    "description": "提示信息",
+                    "type": "string"
+                },
+                "runtime": {
+                    "description": "运行环境: browser/android/ios/windows/macOS/Linux",
+                    "type": "string"
+                },
+                "state": {
+                    "description": "状态码",
+                    "type": "integer"
+                },
+                "status": {
+                    "description": "状态信息",
+                    "type": "integer"
+                },
+                "timestamp": {
+                    "description": "时间戳",
+                    "type": "integer"
+                },
+                "title": {
+                    "description": "MetaApp 协议字段",
+                    "type": "string"
+                },
+                "tx_id": {
+                    "description": "交易 ID",
+                    "type": "string"
+                },
+                "updated_at": {
+                    "description": "更新时间",
+                    "type": "string"
+                },
+                "version": {
+                    "description": "版本号",
+                    "type": "string"
+                },
+                "vout": {
+                    "description": "输出索引",
+                    "type": "integer"
+                }
+            }
+        }
+    }
+}
